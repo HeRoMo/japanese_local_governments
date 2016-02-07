@@ -33,8 +33,10 @@ module JLG
 
     desc "add_code INPUT_FILE", "Read CSV file, Output append local government code"
     method_option :output, type: :string, aliases:'-o', required:false, desc: 'output filepath'
+    method_option :pref_column, type: :string, aliases:'-p', require:false, default:'pref',desc: 'set prefecure column name'
+    method_option :name_column, type: :string, aliases:'-n', require:false, default:'name',desc: 'set name column name'
     def add_code(input_file)
-      JLG::Governments.append_code(input_file, options[:output])
+      JLG::Governments.append_code(input_file, options[:output], pref:options[:pref_column], name:options[:name_column])
     rescue =>e
       $stderr.puts e.message
     end
