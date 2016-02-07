@@ -69,7 +69,10 @@ describe 'CLI' do
   end
 
   describe '#add_code' do
-    before{@inputfile = 'spec/test_data/without_code.csv'}
+    before{
+      @inputfile = 'spec/test_data/without_code.csv'
+      @inputfile_custom_col_name = 'spec/test_data/custom_col_name_without_code.csv'
+    }
     after {
       ['./without_code_20160130.csv',
        'add_code_output_test.csv'].each do|file|
@@ -86,6 +89,10 @@ describe 'CLI' do
       it 'with outputfile' do
         JLG::CLI.new.invoke(:add_code,[@inputfile],{output:'add_code_output_test.csv'})
         expect(read_data'add_code_output_test.csv').to eq read_data
+      end
+      it 'custom column name' do
+        JLG::CLI.new.invoke(:add_code,[@inputfile_custom_col_name],{output:'add_code_output_test.csv',pref_column:'都道府県',name_column:'自治体名'})
+        expect(read_data 'add_code_output_test.csv').to eq read_data 'spec/test_data/custom_col_name_with_code.csv'
       end
     end
 
