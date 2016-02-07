@@ -8,8 +8,9 @@ module JLG
 
     # 地方自治体のリストを出力する
     # @param filename [String] 出力ファイルのパス
-    def self.list(filename=nil)
-      JLG.list(filename){|out|
+    # @param sjis [Boolean] Shift_JISで出力する場合に true とする
+    def self.list(filename=nil,sjis:false)
+      JLG.list(filename,sjis:sjis){|out|
         out.puts HEADER.join(',')
         GOV_DATA.values.each do |data|
           out.puts data.values.join(',')
@@ -38,13 +39,15 @@ module JLG
     # @param outputfile [String] 出力ファイル名。
     # @param pref [String] 都道府県カラムの名前
     # @param name [String] 自治体名カラムの名前
-    def self.append_code(inputfile, outputfile=nil, pref:'pref', name: 'name')
+    # @param sjis [Boolean] 処理したいファイルがShift_JISの場合、trueをセット。デフォルトはfalseでUTF-8として処理する
+    def self.append_code(inputfile, outputfile=nil, pref:'pref', name: 'name',sjis:false)
+      encode = (sjis) ? 'Shift_JIS':'UTF-8'
       if outputfile.nil?
         date = Date.today.strftime('%Y%m%d')
         outputfile = './' + File.basename(inputfile,'.*') + "_#{date}.csv"
       end
-      CSV.open(inputfile,headers: true,return_headers:true) do|csv|
-        CSV.open(outputfile,"wb") do |out|
+      CSV.open(inputfile,"r:#{encode}:UTF-8",headers: true,return_headers:true) do|csv|
+        CSV.open(outputfile,"wb:#{encode}") do |out|
           csv.each do |row|
             if row.header_row?
               out<<row.headers.to_a.insert(0,'code')
