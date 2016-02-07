@@ -3,15 +3,26 @@ require 'spec_helper'
 describe 'JLG::Prefectures' do
 
   describe '::list' do
+    before{
+      @outputfile = 'jlg_prefecture_list_test.csv'
+    }
+    after {
+      File.delete @outputfile if File.exist? @outputfile #後始末
+    }
     it 'output to stdout' do
       expect{JLG::Prefectures.list}.to output(read_data('spec/test_data/prefectures.csv')).to_stdout
     end
     it 'output to csv file' do
+      JLG::Prefectures.list(@outputfile)
+      expect(File.exist? @outputfile).to be true
+      expect(read_data(@outputfile)).to eq read_data('spec/test_data/prefectures.csv')
+    end
+    it 'output to csv file in sjis' do
       outputfile = 'jlg_prefecture_list_test.csv'
-      JLG::Prefectures.list(outputfile)
-      expect(File.exist? outputfile).to be true
-      expect(read_data(outputfile)).to eq read_data('spec/test_data/prefectures.csv')
-      File.delete outputfile #後始末
+      JLG::Prefectures.list(@outputfile,sjis:true)
+      expect(File.exist? @outputfile).to be true
+      expect(read_data(@outputfile,sjis:true)).to eq read_data('spec/test_data/prefectures_sjis.csv',sjis:true)
+
     end
   end
 

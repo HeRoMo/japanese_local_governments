@@ -14,6 +14,13 @@ describe 'JLG::Governments' do
       expect(read_data(outputfile)).to eq read_data
       File.delete outputfile #後始末
     end
+    it 'output to csv file in sjis' do
+      outputfile = 'jlg_governments_list_test.csv'
+      JLG::Governments.list(outputfile, sjis:true)
+      expect(File.exist? outputfile).to be true
+      expect(read_data(outputfile,sjis:true)).to eq read_data('spec/test_data/japanese_local_governments_sjis.csv',sjis:true)
+      File.delete outputfile #後始末
+    end
     it "output path doesn't exist" do
       outputfile = 'not/exist/output.csv'
       expect{JLG::Governments.list(outputfile)}.to raise_error

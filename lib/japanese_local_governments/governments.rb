@@ -8,8 +8,9 @@ module JLG
 
     # 地方自治体のリストを出力する
     # @param filename [String] 出力ファイルのパス
-    def self.list(filename=nil)
-      JLG.list(filename){|out|
+    # @param sjis [Boolean] Shift_JISで出力する場合に true とする
+    def self.list(filename=nil,sjis:false)
+      JLG.list(filename,sjis:sjis){|out|
         out.puts HEADER.join(',')
         GOV_DATA.values.each do |data|
           out.puts data.values.join(',')

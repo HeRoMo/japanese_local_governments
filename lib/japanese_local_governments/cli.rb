@@ -7,13 +7,14 @@ module JLG
   class CLI < Thor
     desc "list","Output local governments by CSV format"
     method_option :prefectures, type: :boolean, aliases:'-p', required:false, desc: "output only prefecures"
+    method_option :sjis, type: :boolean, aliases:'-s', required:false, desc: "output sjis encoding(file output only)"
     method_option :output, type: :string, aliases:'-o', required:false, desc: "output filepath"
     def list
       pref_only = options[:prefectures]
       if pref_only
-        JLG::Prefectures.list(options[:output])
+        JLG::Prefectures.list(options[:output],sjis:options[:sjis])
       else
-        JLG::Governments.list(options[:output])
+        JLG::Governments.list(options[:output],sjis:options[:sjis])
       end
     rescue =>e
       $stderr.puts e.message

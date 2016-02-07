@@ -18,6 +18,15 @@ describe 'CLI' do
         JLG::CLI.new.invoke(:list,[],{output: 'out_test.csv'})
         expect(read_data'out_test.csv').to eq read_data
       end
+
+      it 'with -o,-s option' do
+        JLG::CLI.new.invoke(:list,[],{output: 'out_test.csv',sjis:true})
+        expect(read_data'out_test.csv',sjis:true).to eq read_data('spec/test_data/japanese_local_governments_sjis.csv',sjis:true)
+      end
+      it 'with -o,-p,-s option' do
+        JLG::CLI.new.invoke(:list,[],{output: 'out_test.csv',prefectures:true, sjis:true})
+        expect(read_data'out_test.csv',sjis:true).to eq read_data('spec/test_data/prefectures_sjis.csv',sjis:true)
+      end
     end
 
     context 'with invalid option' do
