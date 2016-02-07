@@ -14,6 +14,13 @@ describe 'JLG::Governments' do
       expect(read_data(outputfile)).to eq read_data
       File.delete outputfile #後始末
     end
+    it 'output to csv file in sjis' do
+      outputfile = 'jlg_governments_list_test.csv'
+      JLG::Governments.list(outputfile, sjis:true)
+      expect(File.exist? outputfile).to be true
+      expect(read_data(outputfile,sjis:true)).to eq read_data('spec/test_data/japanese_local_governments_sjis.csv',sjis:true)
+      File.delete outputfile #後始末
+    end
     it "output path doesn't exist" do
       outputfile = 'not/exist/output.csv'
       expect{JLG::Governments.list(outputfile)}.to raise_error
@@ -70,6 +77,11 @@ describe 'JLG::Governments' do
         JLG::Governments.append_code('spec/test_data/custom_col_name_without_code.csv', 'out_test.csv', pref:'都道府県', name:'自治体名')
         expect(read_data'out_test.csv').to eq read_data('spec/test_data/custom_col_name_with_code.csv')
       end
+
+      it 'with pref,neme sjis' do
+        JLG::Governments.append_code('spec/test_data/custom_col_name_without_code_sjis.csv', 'out_test.csv', pref:'都道府県', name:'自治体名',sjis:true)
+        expect(read_data'out_test.csv',sjis:true).to eq read_data('spec/test_data/custom_col_name_with_code_sjis.csv',sjis:true)
+      end
     end
 
     context 'exec unsuccessfully' do
@@ -80,7 +92,5 @@ describe 'JLG::Governments' do
         expect{JLG::Governments.append_code('spec/test_data/without_code.csv','not/exist/output.csv')}.to raise_error
       end
     end
-
   end
-
 end

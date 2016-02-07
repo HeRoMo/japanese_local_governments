@@ -7,13 +7,14 @@ module JLG
   class CLI < Thor
     desc "list","Output local governments by CSV format"
     method_option :prefectures, type: :boolean, aliases:'-p', required:false, desc: "output only prefecures"
+    method_option :sjis, type: :boolean, aliases:'-s', required:false, desc: "output sjis encoding(file output only)"
     method_option :output, type: :string, aliases:'-o', required:false, desc: "output filepath"
     def list
       pref_only = options[:prefectures]
       if pref_only
-        JLG::Prefectures.list(options[:output])
+        JLG::Prefectures.list(options[:output],sjis:options[:sjis])
       else
-        JLG::Governments.list(options[:output])
+        JLG::Governments.list(options[:output],sjis:options[:sjis])
       end
     rescue =>e
       $stderr.puts e.message
@@ -33,8 +34,11 @@ module JLG
 
     desc "add_code INPUT_FILE", "Read CSV file, Output append local government code"
     method_option :output, type: :string, aliases:'-o', required:false, desc: 'output filepath'
+    method_option :pref_column, type: :string, aliases:'-p', require:false, default:'pref',desc: 'set prefecure column name'
+    method_option :name_column, type: :string, aliases:'-n', require:false, default:'name',desc: 'set name column name'
+    method_option :sjis, type: :boolean, aliases:'-s', require:false, default:false, desc: 'input/output in sjis.(default: UTF-8)'
     def add_code(input_file)
-      JLG::Governments.append_code(input_file, options[:output])
+      JLG::Governments.append_code(input_file, options[:output], pref:options[:pref_column], name:options[:name_column], sjis:options[:sjis])
     rescue =>e
       $stderr.puts e.message
     end

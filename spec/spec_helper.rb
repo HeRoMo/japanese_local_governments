@@ -14,9 +14,10 @@ RSpec.configure do |config|
 end
 
 DATA_FILE =  File.expand_path('../../data/japanese_local_governments.csv', __FILE__)
-def read_data(filename=DATA_FILE, columns=['code','pref','name','type','district','furigana'])
+def read_data(filename=DATA_FILE, columns:['code','pref','name','type','district','furigana'],sjis:false)
+  encode = (sjis) ? 'Shift_JIS':'UTF-8'
   out = StringIO.new
-  CSV.foreach(filename,headers: true,return_headers: true).each do |line|
+  CSV.foreach(filename,encoding:"#{encode}:UTF-8",headers: true,return_headers: true).each do |line|
     out.puts line.to_h.select{|k,v| columns.include? k}.values.join(',')
   end
   out.string

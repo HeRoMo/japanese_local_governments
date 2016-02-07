@@ -6,8 +6,9 @@ module JLG
 
     # 都道府県リストを出力する
     # @param filename [String] 出力先ファイルのパス
-    def self.list(filename=nil)
-      JLG.list(filename){|out|
+    # @param sjis [Boolean] Shift_JISで出力する場合に true とする
+    def self.list(filename=nil,sjis:false)
+      JLG.list(filename,sjis:sjis){|out|
         out.puts HEADER.join(',')
         GOV_DATA_NAME_INDEX.each do |key,value|
           out.puts GOV_DATA[value[key]].values.join(',')
