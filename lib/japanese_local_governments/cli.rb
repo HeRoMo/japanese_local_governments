@@ -35,8 +35,9 @@ module JLG
     method_option :output, type: :string, aliases:'-o', required:false, desc: 'output filepath'
     method_option :pref_column, type: :string, aliases:'-p', require:false, default:'pref',desc: 'set prefecure column name'
     method_option :name_column, type: :string, aliases:'-n', require:false, default:'name',desc: 'set name column name'
+    method_option :sjis, type: :boolean, aliases:'-s', require:false, default:false, desc: 'input/output in sjis.(default: UTF-8)'
     def add_code(input_file)
-      JLG::Governments.append_code(input_file, options[:output], pref:options[:pref_column], name:options[:name_column])
+      JLG::Governments.append_code(input_file, options[:output], pref:options[:pref_column], name:options[:name_column], sjis:options[:sjis])
     rescue =>e
       $stderr.puts e.message
     end
