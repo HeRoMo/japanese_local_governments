@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = JLG::VERSION
   spec.authors       = ["HeRoMo"]
   spec.email         = ["dev@asterisk-works.jp"]
+  spec.licenses      = ['Apache-2.0']
 
   spec.summary       = %q{A Utility of Japanese local governments data}
   spec.description   = %q{Utility of Japanese local governments data}
