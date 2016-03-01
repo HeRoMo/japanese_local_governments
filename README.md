@@ -1,5 +1,7 @@
 # JapaneseLocalGovernments
 
+[![Build Status](https://travis-ci.org/HeRoMo/japanese_local_governments.svg?branch=master)](https://travis-ci.org/HeRoMo/japanese_local_governments)
+
 これは日本の地方自治体情報を扱うためのユーティリティツールです。
 
 自治体から提供されるオープンデータは増えつつある状況ですが、それらのデータにはコードが付与されないことが多く、
