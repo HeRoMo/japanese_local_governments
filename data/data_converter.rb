@@ -77,37 +77,15 @@ class DataConverter
   # CSVのデータからRubyのモジュールを生成する。
   # モジュールには定数でデータを定義する。
   # そうすることで、CSVから読むよりかなり高速にデータを取り出せる
+  # @param template [String] テンプレートファイル名
   # @param output [String] 出力先のファイル名
-  def make_data_module(output = '../lib/japanese_local_governments/data.rb')
+  def make_data_module(
+      template:'./data/jlg_data_template.erb',
+      output:'../lib/japanese_local_governments/data.rb')
+    require 'erb'
+    erb = ERB.new(File.read(template),nil,'-')
     open(output, 'wb') do |file|
-      file.puts 'module JLG'
-      file.puts "\tmodule DATA"
-
-      file.puts "\t\t# カラム名"
-      file.puts "\t\tHEADER=['code','pref','name','type','district','furigana']"
-
-      file.puts "\t\t# 地方自治体データのマスター"
-      file.puts "\t\tGOV_DATA={"
-      @gov_data.each do |k,v|
-        file.puts "\t\t\t#{k.to_i}=>#{v.map{|key,val|[key.to_sym,val]}.to_h},"
-      end
-      file.puts "\t\t}"
-
-      file.puts "\t\t# 地方自治体の名前でデータを引くためインデックス 都道府県、自治体名でコードを取得できる"
-      file.puts "\t\tGOV_DATA_NAME_INDEX={"
-      @gov_data_name_index.each do |key,value|
-        file.puts "\t\t\t'#{key}'=>{"
-        value.each do |k,v|
-          file.puts "\t\t\t\t'#{k}'=>#{v.to_i},"
-        end
-        file.puts "\t\t\t},"
-      end
-      file.puts "\t\t}"
-
-      file.puts "\t\t# 地方"
-
-      file.puts "\tend"
-      file.puts 'end'
+      file.puts erb.result(binding)
     end
   end
 
@@ -177,7 +155,5 @@ if __FILE__ == $0
   dc = DataConverter.new '000318342.xls'
   dc.read_data
   dc.make_data_module
-
-  # dc.output
 
 end

@@ -18,7 +18,7 @@ describe DataConverter do
   describe "#make_data_module" do
     before(:all) do
       @test_module_file = './data/data_converter_test.rb'
-      @dc.make_data_module(@test_module_file)
+      @dc.make_data_module(output:@test_module_file)
       class Test
         JLG.module_eval{remove_const :DATA} # 一旦、正規のモジュールを削除
         # テスト用に生成したモジュールの読み込み
@@ -40,8 +40,16 @@ describe DataConverter do
       it 'has 1963 values' do
         expect(subject.keys.size).to be 1963
       end
-      it '' do
-
+      it 'has {Fixnum=>hash} stracture' do
+        subject.each do |code, data|
+          expect(code.class).to be Fixnum
+          expect(data.key?(:code)).to be true
+          expect(data.key?(:pref)).to be true
+          expect(data.key?(:name)).to be true
+          expect(data.key?(:type)).to be true
+          expect(data.key?(:district)).to be true
+          expect(data.key?(:furigana)).to be true
+        end
       end
     end
 

@@ -1,0 +1,23 @@
+module JLG
+  module DATA
+    # カラム名
+    HEADER=['code','pref','name','type','district','furigana']
+
+    # 地方自治体データのマスター
+    GOV_DATA={
+    <%- @gov_data.each do |k,v| -%>
+      <%=k.to_i%>=><%=v.map{|key,val|[key.to_sym,val]}.to_h %>,
+    <%- end -%>
+    }
+    # 地方自治体の名前でデータを引くためインデックス 都道府県、自治体名でコードを取得できる
+    GOV_DATA_NAME_INDEX={
+    <%- @gov_data_name_index.each do |key,value| -%>
+      '<%=key%>'=>{
+        <%- value.each do |k,v| -%>
+        '<%=k%>'=><%=v.to_i%>,
+        <%- end -%>
+      },
+    <%- end -%>
+    }
+  end
+end
