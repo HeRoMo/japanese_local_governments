@@ -80,8 +80,8 @@ class DataConverter
   # @param template [String] テンプレートファイル名
   # @param output [String] 出力先のファイル名
   def make_data_module(
-      template:'./data/jlg_data_template.erb',
-      output:'../lib/japanese_local_governments/data.rb')
+      template:__dir__+'/jlg_data_template.erb',
+      output: __dir__+'/../lib/japanese_local_governments/data.rb')
     require 'erb'
     erb = ERB.new(File.read(template),nil,'-')
     open(output, 'wb') do |file|
@@ -147,13 +147,4 @@ class DataConverter
       when (40..47) then return '九州地方'
     end
   end
-end
-
-
-if __FILE__ == $0
-
-  dc = DataConverter.new '000318342.xls'
-  dc.read_data
-  dc.make_data_module
-
 end
