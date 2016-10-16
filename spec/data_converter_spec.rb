@@ -3,7 +3,7 @@ require './data/data_converter.rb'
 
 describe DataConverter do
   before(:all) do
-    @dc = DataConverter.new("./data/000318342.xls")
+    @dc = DataConverter.new("./data/000442937.xls")
     @dc.read_data
   end
 
