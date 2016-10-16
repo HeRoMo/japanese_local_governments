@@ -41,7 +41,7 @@ class DataConverter
     @gov_data = {}
     @gov_data_name_index ={}
 
-    # シート１を読み込む
+    # シート１(基礎自治体)を読み込む
     first_row = true
     Excel2CSV.foreach(filename) do |line|
       if first_row
@@ -53,7 +53,7 @@ class DataConverter
       @pref_data[data[:code][0,2]] = data if data[:type]=='都道府県'
     end
 
-    # シート２を読み込む
+    # シート２(政令指定都市)を読み込む
     Excel2CSV.foreach(filename, sheet:1) do |line|
       next if @gov_data[line[S2_CODE6]] # すでにデータがある code はスキップ
       data = convert_to_hash_for_gyouseiku line
@@ -77,8 +77,9 @@ class DataConverter
   # CSVのデータからRubyのモジュールを生成する。
   # モジュールには定数でデータを定義する。
   # そうすることで、CSVから読むよりかなり高速にデータを取り出せる
-  def make_data_module
-    open('../lib/japanese_local_governments/data.rb', 'wb') do |file|
+  # @param output [String] 出力先のファイル名
+  def make_data_module(output = '../lib/japanese_local_governments/data.rb')
+    open(output, 'wb') do |file|
       file.puts 'module JLG'
       file.puts "\tmodule DATA"
 
@@ -178,11 +179,5 @@ if __FILE__ == $0
   dc.make_data_module
 
   # dc.output
-
-  # puts dc.type '010006'
-  # puts dc.type '271004'
-  #
-  # puts dc.district '010006'
-  # puts dc.district '271004'
 
 end
