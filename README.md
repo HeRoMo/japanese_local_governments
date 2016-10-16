@@ -130,6 +130,11 @@ jlg は次のサブコマンドを持ちます。
     $ jlg help [COMMAND]         # Describe available commands or one specific command
   
 
+### データについて
+本ライブラリで利用しているデータは次のサイドで配布されている情報を基にしています。
+ 
+ [総務省｜電子自治体｜全国地方公共団体コード](http://www.soumu.go.jp/denshijiti/code.html)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. 
